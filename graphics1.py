@@ -1,28 +1,30 @@
 from nicegui import ui
 from uuid import uuid4
 
-def root () :
-    ui.label(f'This ID {str(uuid4())[:6]} changes only reload')
+def root() :
     ui.separator()
-    ui.sub_pages({'/' : mainPage, '/studentPage' : studentPage })
+    ui.sub_pages({'/' : mainPage, '/studentPage' : studentPage, '/adultPage' : adultPage })
 
-#'/adultPage' : adultPage
-ui.page('/mainPage')
+
 def mainPage():
-    ui.label('Welcome to our app')
-    ui.button('Adult', on_click=lambda: ui.notify('You clicked me!'))
-    ui.button('Student', on_click=lambda: ui.notify('You clicked me!'))
-    ui.link('Student', "/studentPage")
-    ui.link('Adult', "/adultPage")
+    ui.label('Welcome to our web')
+    ui.button('Adult', on_click=lambda: ui.navigate.to( "/adultPage", new_tab=True))
+    ui.button('Student', on_click=lambda: ui.navigate.to( "/studentPage", new_tab=False))
 
 
 
-ui.page('/studentPage')
 def studentPage () :
-    ui.textarea(label='Enter your name :', placeholder='start typing')
+    ui.input(label='Text', placeholder='start typing',
+             on_change=lambda e: result.set_text('you typed: ' + e.value),
+             validation={'Input too long': lambda value: len(value) < 20})
+    result = ui.label()
+
+    ui.button('Back', on_click=ui.navigate.back)
+    ui.button('Back', on_click=ui.navigate.back)
+    ui.button('Forward', on_click=ui.navigate.forward)
+
+def adultPage():
+    pass
 
 
-
-
-ui.button('student', on_click=lambda : ui.navigate.to('/studentPage'))
-ui.run()
+ui.run(root())
