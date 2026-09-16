@@ -6,13 +6,6 @@ def init_requests():
     global requests
 
 """
-    This function gets list of requests by owner number
-"""
-def assign_requests(got_requests):
-    requests = got_requests
-
-
-"""
     This function creates new request and saves it locally and in database
 """
 def create_request(category, description,owner_name,owner_number, owner_area):

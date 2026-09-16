@@ -1,5 +1,5 @@
 import pandas
-
+import requests
 import consts
 
 data_frame = pandas.DataFrame()
@@ -33,7 +33,8 @@ def save_new_request(request):
 """
 def get_user_requests(owner_number):
     requests_df = data_frame.loc[(data_frame['Owner_number'] == owner_number)]
-    return get_list_of_data_frame(requests_df)
+    requests.requests = get_list_of_data_frame(requests_df)
+    return requests.requests
 
 """
     This function gets the owner area and returns dictionary
@@ -42,17 +43,19 @@ def get_user_requests(owner_number):
 def get_requests_by_area(owner_area):
     requests_df = data_frame.loc[(data_frame['Owner_area'] == owner_area) &
                                    (data_frame["Status"] == consts.WAITING_STATUS)]
-    return get_list_of_data_frame(requests_df)
+    requests.requests = get_list_of_data_frame(requests_df)
+    return requests.requests
 
 """
     This function gets the owner area and the category
     and returns dictionary of requests from given area
 """
 def get_requests_by_category_and_area(category, owner_area):
-    requests_dict = data_frame.loc[(data_frame['Category'] == category) &
+    requests_df = data_frame.loc[(data_frame['Category'] == category) &
                                    (data_frame["Owner_area"] == owner_area) &
                                    (data_frame["Status"] == consts.WAITING_STATUS)]
-    return get_list_of_data_frame(requests_dict)
+    requests.requests = get_list_of_data_frame(requests_df)
+    return requests.requests
 
 """
     This function gets the request id and its new status 
@@ -93,6 +96,3 @@ def get_list_of_data_frame(df):
         }
         list.append(curr_request)
     return list
-
-init_database()
-print(get_requests_by_area("Tel Aviv"))
