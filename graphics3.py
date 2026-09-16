@@ -75,7 +75,7 @@ def requestsPage():
 ##################### עמוד יצירת בקשה חדשה
 def newRequestsPage():
     ui.label('creat new requests').classes('text-h6')
-
+##
     with ui.row():
         select_categories = ui.select(consts.CATEGORIES)
         description = ui.textarea(label='Text', placeholder='start typing')
