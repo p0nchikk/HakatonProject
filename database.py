@@ -33,8 +33,7 @@ def save_new_request(request):
 """
 def get_user_requests(owner_number):
     requests_df = data_frame.loc[(data_frame['Owner_number'] == owner_number)]
-    requests.requests = get_list_of_data_frame(requests_df)
-    return requests.requests
+    return get_list_of_data_frame(requests_df)
 
 """
     This function gets the owner area and returns dictionary
@@ -43,8 +42,7 @@ def get_user_requests(owner_number):
 def get_requests_by_area(owner_area):
     requests_df = data_frame.loc[(data_frame['Owner_area'] == owner_area) &
                                    (data_frame["Status"] == consts.WAITING_STATUS)]
-    requests.requests = get_list_of_data_frame(requests_df)
-    return requests.requests
+    return get_list_of_data_frame(requests_df)
 
 """
     This function gets the owner area and the category
@@ -54,8 +52,7 @@ def get_requests_by_category_and_area(category, owner_area):
     requests_df = data_frame.loc[(data_frame['Category'] == category) &
                                    (data_frame["Owner_area"] == owner_area) &
                                    (data_frame["Status"] == consts.WAITING_STATUS)]
-    requests.requests = get_list_of_data_frame(requests_df)
-    return requests.requests
+    return get_list_of_data_frame(requests_df)
 
 """
     This function gets the request id and its new status 

@@ -1,10 +1,5 @@
 import database
 
-requests = []
-
-def init_requests():
-    global requests
-
 """
     This function creates new request and saves it locally and in database
 """
@@ -17,5 +12,4 @@ def create_request(category, description,owner_name,owner_number, owner_area):
             "Owner_number" : owner_number,
             "Owner_area" : owner_area
         }
-    requests.append(requests)
     database.save_new_request(request)
