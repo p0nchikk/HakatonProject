@@ -11,15 +11,18 @@ import consts
 import database
 import adult
 import student
+import requests
 
 
 def root() :
     ui.separator()
+    database.init_database()
     ui.sub_pages({'/' : mainPage
                      , '/studentPage' : studentPage
                      , '/adultPage' : adultPage
                      , '/cityPage' : cityPage
                     , '/requestsPage' : requestsPage
+                  , '/newRequestsPage' : newRequestsPage
                   })
 
 
@@ -59,15 +62,42 @@ def adultPage():
 
 
 def requestsPage():
-    ui.label(f'requests by {adult.adult['name']}').classes('text-h6')
-    #מראה לזקן את הבקשות שלו
+    with ui.row():
+        ui.button('new request', on_click=lambda: ui.navigate.newRequestsPage)
+        ui.label(f'requests by {adult.adult['name']}:').classes('text-h6')
 
-    #שומר את הרשימה של הבקשות של הזקן מהדטה בייס
-    requests_list_by_man = database.get_user_requests(adult.adult['phone'])
+    # שומר את הרשימה של הבקשות של הזקן מהדטה בייס
+    requests_list_by_man = database.get_user_requests(int(adult.adult['phone']))
+    # מראה לזקן את הבקשות שלו
+    index = 0
+    try:
+        while True:
+            ui.label(f'Category: {requests_list_by_man[index]['Category']}')
+            ui.label(f'description: {requests_list_by_man[index]['Description']}')
+            ui.label(f'phone: {requests_list_by_man[index]['Owner_number']}')
+    except ImportError:
+        if index == len(requests_list_by_man):
+            index = 0
+        else:
+            index = len(requests_list_by_man) - 1
+    with ui.row():
+        ui.button('next', on_click=lambda: index + 1)
+        ui.button('last', on_click=lambda: index - 1)
+
+
+##################### עמוד יצירת בקשה חדשה
+def newRequestsPage():
+    ui.label('creat new requests').classes('text-h6')
 
     with ui.row():
-        ui.button('next', on_click=lambda :next_requests(requests_list_by_man))
-        ui.button('last')#להוסיף פעולה של לחזור אחורה
+        select_categories = ui.select(consts.CATEGORIES)
+        description = ui.textarea(label='Text', placeholder='start typing')
+        #מציג את הקבועים
+        ui.labl(f'name: {adult.adult.name}')
+        ui.labl(f'phone number: {adult.adult.phone}')
+        ui.labl(f'city: {adult.adult.city}')
+
+        ui.button('save', on_click=lambda : save_request(select_categories.value, description.value,adult.adult.name,adult.adult.phone, adult.adult.city))
 
 
 #העמוד של החיפוש של הנער
@@ -103,11 +133,13 @@ def save_student(name, phone):
     ui.navigate.to("/cityPage", new_tab=False)
 
 def save_adult(name, phone ,city):
-    adult.adult = adult.create_adult(name,int(phone),city)
+    adult.adult = adult.create_adult(name,phone,city)
     ui.navigate.to("/requestsPage", new_tab=False)
 
-def save_request(): #מקבל את כל התנאים של יצירת בקשה
-    pass
+def save_request(category, description,owner_name,owner_number, owner_area): #מקבל את כל התנאים של יצירת בקשה
+    requests.create_request(category, description,owner_name,owner_number, owner_area)
+    ui.navigate.to("/requestsPage", new_tab=False)
+
 
 def next_requests(list_to_sow):
     '''with ui.card():
