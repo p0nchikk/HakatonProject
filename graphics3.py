@@ -81,10 +81,10 @@ def newRequestsPage():
         description = ui.textarea(label='Text', placeholder='start typing')
         #מציג את הקבועים
         ui.labl(f'name: {adult.adult.name}')
-        ui.labl(f'phone number: {adult.adult.name}')
+        ui.labl(f'phone number: {adult.adult.phone}')
         ui.labl(f'city: {adult.adult.city}')
 
-        ui.button('save', on_click=lambda : save_request())
+        ui.button('save', on_click=lambda : save_request(select_categories.value, description.value,adult.adult.name,adult.adult.phone, adult.adult.city))
 
 
 #העמוד של החיפוש של הנער
@@ -123,8 +123,10 @@ def save_adult(name, phone ,city):
     adult.adult = adult.create_adult(name,phone,city)
     ui.navigate.to("/requestsPage", new_tab=False)
 
-def save_request(): #מקבל את כל התנאים של יצירת בקשה
-    pass
+def save_request(category, description,owner_name,owner_number, owner_area): #מקבל את כל התנאים של יצירת בקשה
+    requests.create_request(category, description,owner_name,owner_number, owner_area)
+    ui.navigate.to("/requestsPage", new_tab=False)
+
 
 def next_requests(list_to_sow):
     '''with ui.card():
