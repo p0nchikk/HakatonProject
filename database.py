@@ -13,18 +13,18 @@ def init_database():
     and writes it to database file
 """
 def save_new_request(request):
-    # TODO: fix concat function
     new_request = {
-        "Status": request["Status"],
+        "Id": get_requests_count(),
+        "Status": consts.WAITING_STATUS,
         "Category": request["Category"],
         "Description": request["Description"],
         "Owner_number": request["Owner_number"],
         "Owner_name" : request["Owner_name"],
         "Owner_area": request["Owner_area"],
-        "Helper_number": request["Helper_number"],
-        "Helper_name": request["Helper_name"]
+        "Helper_number": None,
+        "Helper_name": None
     }
-    data_frame.loc[request["Id"]] = new_request
+    data_frame.loc[new_request["Id"]] = new_request
     data_frame.to_csv("database.csv", index=True)
 
 """
@@ -72,6 +72,12 @@ def set_helper_to_request(request_id, helper_name, helper_number):
     data_frame.loc[request_id, "Helper_number"] = helper_number
     data_frame.to_csv("database.csv", index=True)
     update_request_status(request_id, consts.HELPING_STATUS)
+
+"""
+    This function returns the amount of requests saved in database
+"""
+def get_requests_count():
+    return len(data_frame.index)
 
 
 def get_list_of_dict(dict):
