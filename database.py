@@ -78,9 +78,7 @@ def get_list_of_dict(dict):
             "Description": dict["Description"][i],
             "Owner_name": dict["Owner_name"][i],
             "Owner_number": dict["Owner_number"][i],
-            "Owner_area": dict["Owner_area"][i],
-            "Helper_name": dict["Helper_name"][i],
-            "Helper_number": dict["Helper_number"][i]
+            "Owner_area": dict["Owner_area"][i]
         }
         list.append(curr_request)
     return list
