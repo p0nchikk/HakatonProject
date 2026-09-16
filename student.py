@@ -1,9 +1,8 @@
+student = {}
 
-
-global student
-
-def create_student(name, phone_nember):
+def create_student(name, phone_number):
+    global student
     return {
         "name": name,
-        "phone_number": phone_nember
+        "phone_number": phone_number
     }

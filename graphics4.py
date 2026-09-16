@@ -11,7 +11,6 @@ import consts
 import database
 import adult
 import student
-import requests
 
 
 def root() :
@@ -21,7 +20,6 @@ def root() :
                      , '/adultPage' : adultPage
                      , '/cityPage' : cityPage
                     , '/requestsPage' : requestsPage
-                  , '/newRequestsPage' : newRequestsPage
                   })
 
 
@@ -72,19 +70,6 @@ def requestsPage():
         ui.button('last')#להוסיף פעולה של לחזור אחורה
 
 
-##################### עמוד יצירת בקשה חדשה
-def newRequestsPage():
-    ui.label('creat new requests').classes('text-h6')
-
-    with ui.row():
-        select_categories = ui.select(consts.CATEGORIES)
-        description = ui.textarea(label='Text', placeholder='start typing')
-
-        ui.labl(f'name: {adult.adult.name}')
-        ui.labl(f'phone number: {adult.adult.name}')
-        ui.labl(f'locati: {adult.adult.name}')
-
-
 #העמוד של החיפוש של הנער
 def cityPage():
     ui.label('chose city filter:')
@@ -118,7 +103,7 @@ def save_student(name, phone):
     ui.navigate.to("/cityPage", new_tab=False)
 
 def save_adult(name, phone ,city):
-    adult.adult = adult.create_adult(name,phone,city)
+    adult.adult = adult.create_adult(name,int(phone),city)
     ui.navigate.to("/requestsPage", new_tab=False)
 
 def save_request(): #מקבל את כל התנאים של יצירת בקשה
