@@ -1,4 +1,4 @@
 ,Status,Category,Description,Owner_number,Owner_name,Owner_area,Helper_number,Helper_name
-0,1,Dogs,Take the dog to walk,0556895324,Danny,Tel Aviv,0548963251,Anna
-1,0,Technology,Can't load files to bituah leumi,0536987452,Kate,Bear Sheva,"",""
-2,0,Technology,Phone isn't working,0536984521,Oleg,Netanya,r3refr,r3refr
+0,1,Dogs,Take the dog to walk,556895324,Danny,Tel Aviv,0548963251,Anna
+1,1,Technology,Can't load files to bituah leumi,536987452,Kate,Netanya,,
+2,1,Technology,Phone isn't working,536984521,Oleg,Netanya,055978436,Danny
