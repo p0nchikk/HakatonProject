@@ -1,5 +1,7 @@
 import pandas
 
+import consts
+
 data_frame = pandas.DataFrame()
 
 def init_database():
@@ -11,18 +13,18 @@ def init_database():
     and writes it to database file
 """
 def save_new_request(request):
-    # TODO: fix concat function
     new_request = {
-        "Status": request["Status"],
+        "Id": get_requests_count(),
+        "Status": consts.WAITING_STATUS,
         "Category": request["Category"],
         "Description": request["Description"],
         "Owner_number": request["Owner_number"],
         "Owner_name" : request["Owner_name"],
         "Owner_area": request["Owner_area"],
-        "Helper_number": request["Helper_number"],
-        "Helper_name": request["Helper_name"]
+        "Helper_number": None,
+        "Helper_name": None
     }
-    data_frame.loc[request["Id"]] = new_request
+    data_frame.loc[new_request["Id"]] = new_request
     data_frame.to_csv("database.csv", index=True)
 
 """
@@ -38,7 +40,9 @@ def get_user_requests(owner_number):
     of requests from given area
 """
 def get_requests_by_area(owner_area):
-    requests_dict = data_frame.loc[(data_frame['Owner_area'] == owner_area) & (data_frame["Status"] == 'Published')].to_dict()
+    requests_dict = data_frame.loc[(data_frame['Owner_area'] == owner_area) &
+                                   (data_frame["Status"] == 'Published')  &
+                                   (data_frame["Status"] == consts.WAITING_STATUS)].to_dict()
     return get_list_of_dict(requests_dict)
 
 """
@@ -46,7 +50,9 @@ def get_requests_by_area(owner_area):
     and returns dictionary of requests from given area
 """
 def get_requests_by_category_and_area(category, owner_area):
-    requests_dict = data_frame.loc[(data_frame['Category'] == category) & (data_frame["Owner_area"] == owner_area)].to_dict()
+    requests_dict = data_frame.loc[(data_frame['Category'] == category) &
+                                   (data_frame["Owner_area"] == owner_area) &
+                                   (data_frame["Status"] == consts.WAITING_STATUS)].to_dict()
     return get_list_of_dict(requests_dict)
 
 """
@@ -65,7 +71,13 @@ def set_helper_to_request(request_id, helper_name, helper_number):
     data_frame.loc[request_id, "Helper_name"] = helper_name
     data_frame.loc[request_id, "Helper_number"] = helper_number
     data_frame.to_csv("database.csv", index=True)
-    update_request_status(request_id, 1)
+    update_request_status(request_id, consts.HELPING_STATUS)
+
+"""
+    This function returns the amount of requests saved in database
+"""
+def get_requests_count():
+    return len(data_frame.index)
 
 
 def get_list_of_dict(dict):
@@ -78,9 +90,7 @@ def get_list_of_dict(dict):
             "Description": dict["Description"][i],
             "Owner_name": dict["Owner_name"][i],
             "Owner_number": dict["Owner_number"][i],
-            "Owner_area": dict["Owner_area"][i],
-            "Helper_name": dict["Helper_name"][i],
-            "Helper_number": dict["Helper_number"][i]
+            "Owner_area": dict["Owner_area"][i]
         }
         list.append(curr_request)
     return list
