@@ -14,6 +14,7 @@ import student
 
 
 def root() :
+    database.init_database()
     ui.separator()
     ui.sub_pages({'/' : mainPage
                      , '/studentPage' : studentPage
@@ -77,21 +78,26 @@ def cityPage():
     ui.label('choose category filter:')
     select_category = ui.select(consts.CATEGORIES)
 
-#להמשיך אחרי שיהיה כבר משהו בתוך הדטה בייס
     list_to_show = database.get_requests_by_category_and_area(select_category, select_city.value)
-
+    print(list_to_show)
+    # dict1 = {"name" : 1 , "city" : 2}
+    # dict2 = {"name" : 3 , "city" : 4}
+    # dict3 = {"name" : 5 , "city" : 6}
+    # list = [dict1, dict2, dict3]
 
     # Arrange items vertically inside a stylized container
-    with ui.card():
-        ui.label('requests').classes('text-h6')
-        i = 0
+    ui.label('requests').classes('text-h6')
+    i = 0
+    try:
         while i< len(list_to_show):
             with ui.row():
                 ui.button('Left' , on_click=lambda : click_left(list_to_show, i))
                 ui.button('Right' , on_click=lambda : click_right(list_to_show, i))
                 ui.button('Choose', on_click=lambda : set_choose(list_to_show, i))
+    except IndexError:
+        if i >= len(list_to_show):
+            pass
 
-            #פרטי הבקשה
     #לולאת וויל שתפסיק כאשר הגיע לאורך הרשימה
     #תעלה משתנה כל פעם ב1 וזה יהיה המיקום ברשימה שמציגים
     #אם נלחץ כפתור בחר ביירק
@@ -100,6 +106,19 @@ def cityPage():
     """for city in list_to_sow:
         ui.label(city)
     ui.separator().classes('my-4')"""
+
+def left(list, i):
+    with ui.column():
+        ui.label("Name: "+list[i]["name"])
+        ui.label("City: "+list[i]["city"])
+    i -= 1
+
+def right(list, i):
+    with ui.column():
+        ui.label("Name: "+list[i]["name"])
+        ui.label("City: "+list[i]["city"])
+    i += 1
+
 
 
 #הפעולה שנראת כאשר לוחצים על כתפור שמור ביצירת תלמיד
