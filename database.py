@@ -32,8 +32,8 @@ def save_new_request(request):
     of requests of this number
 """
 def get_user_requests(owner_number):
-    requests_dict = data_frame.loc[(data_frame['Owner_number'] == owner_number)].to_dict()
-    return get_list_of_data_frame(requests_dict)
+    requests_df = data_frame.loc[(data_frame['Owner_number'] == owner_number)]
+    return get_list_of_data_frame(requests_df)
 
 """
     This function gets the owner area and returns dictionary
