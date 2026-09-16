@@ -11,7 +11,7 @@ import consts
 import database
 import adult
 import student
-
+from graphics3 import newRequestsPage
 
 def root() :
     ui.separator()
@@ -20,6 +20,7 @@ def root() :
                      , '/adultPage' : adultPage
                      , '/cityPage' : cityPage
                     , '/requestsPage' : requestsPage
+                  , '/newRequestsPage' : newRequestsPage
                   })
 
 
@@ -59,12 +60,18 @@ def adultPage():
 
 
 def requestsPage():
-    ui.label(f'requests by {adult.adult['name']}').classes('text-h6')
-    #מראה לזקן את הבקשות שלו
+    with ui.row():
+        ui.button('new request',on_click= lambda : ui.navigate.newRequestsPage)
+        ui.label(f'requests by {adult.adult['name']}:').classes('text-h6')
 
     #שומר את הרשימה של הבקשות של הזקן מהדטה בייס
     requests_list_by_man = database.get_user_requests(adult.adult['phone'])
-
+    #מראה לזקן את הבקשות שלו
+    index = 0
+    try:
+        pass
+    except ImportError:
+        pass
     with ui.row():
         ui.button('next', on_click=lambda :next_requests(requests_list_by_man))
         ui.button('last')#להוסיף פעולה של לחזור אחורה
