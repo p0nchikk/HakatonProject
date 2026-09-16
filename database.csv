@@ -1,4 +1,10 @@
-,Status,Category,Description,Owner_number,Owner_name,Owner_area,Helper_number,Helper_name
-0,1,Dogs,Take the dog to walk,556895324,Danny,Tel Aviv,0548963251,Anna
-1,1,Technology,Can't load files to bituah leumi,536987452,Kate,Netanya,,
-2,1,Technology,Phone isn't working,536984521,Oleg,Netanya,055978436,Danny
+"",Id,Status,Category,Description,Owner_number,Owner_name,Owner_area,Helper_number,Helper_name
+0,1,1,Pets,Take the dog to walk,556895324,Danny,Tel Aviv,548963251.0,Anna
+1,2,0,Technology,Can't load files to bituah leumi,536987452,Kate,Netanya,,
+2,3,1,Technology,Phone isn't working,536984521,Oleg,Netanya,55978436.0,Danny
+3,4,0,Pets,Feed the cat,536987452,Emma,Bear Sheva,,
+4,5,0,Shopping,Need to buy vegetables,546569871,Miri,Haifa,,
+5,6,0,Shopping,Have no fruits at home,546329865,Daniel,Haifa,,
+6,7,0,Technology,The tv isn't working,553269824,Roni,Bear Sheva,,
+7,8,0,Cleaning,Need someone to wipe the dust ,542311156,Shirley ,Tel Aviv,,
+8,9,0,Cleaning,Need someone to mop the floor ,553216647,Lily,Tel Aviv,,

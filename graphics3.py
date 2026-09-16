@@ -11,16 +11,17 @@ import consts
 import database
 import adult
 import student
+import requests
 
 
 def root() :
-    database.init_database()
     ui.separator()
     ui.sub_pages({'/' : mainPage
                      , '/studentPage' : studentPage
                      , '/adultPage' : adultPage
                      , '/cityPage' : cityPage
                     , '/requestsPage' : requestsPage
+                  , '/newRequestsPage' : newRequestsPage
                   })
 
 
@@ -32,7 +33,7 @@ def mainPage():
     toggle_image = ui.toggle(['student','adult']
                              ,on_change=lambda : image.set_source(f'{toggle_dick[toggle_image.value]}.PNG'))
 
-    ui.button('choose', on_click=lambda: ui.navigate.to( f"/{toggle_dick[toggle_image.value]}", new_tab=False))
+    ui.button('chose', on_click=lambda: ui.navigate.to( f"/{toggle_dick[toggle_image.value]}", new_tab=False))
 
 
 
@@ -71,55 +72,47 @@ def requestsPage():
         ui.button('last')#להוסיף פעולה של לחזור אחורה
 
 
+##################### עמוד יצירת בקשה חדשה
+def newRequestsPage():
+    ui.label('creat new requests').classes('text-h6')
+
+    with ui.row():
+        select_categories = ui.select(consts.CATEGORIES)
+        description = ui.textarea(label='Text', placeholder='start typing')
+        #מציג את הקבועים
+        ui.labl(f'name: {adult.adult.name}')
+        ui.labl(f'phone number: {adult.adult.phone}')
+        ui.labl(f'city: {adult.adult.city}')
+
+        ui.button('save', on_click=lambda : save_request(select_categories.value, description.value,adult.adult.name,adult.adult.phone, adult.adult.city))
+
+
 #העמוד של החיפוש של הנער
 def cityPage():
-    ui.label('choose city filter: ')
+    ui.label('chose city filter:')
     select_city = ui.select(consts.CITY_LIST)
-    ui.label('choose category filter:')
-    select_category = ui.select(consts.CATEGORIES)
 
-    list_to_show = database.get_requests_by_category_and_area(select_category, select_city.value)
-    print(list_to_show)
-    # dict1 = {"name" : 1 , "city" : 2}
-    # dict2 = {"name" : 3 , "city" : 4}
-    # dict3 = {"name" : 5 , "city" : 6}
-    # list = [dict1, dict2, dict3]
+#להמשיך אחרי שיהיה כבר משהו בתוך הדטה בייס
+    #list_to_sow = database.get_requests_by_city('tel aviv')
+
 
     # Arrange items vertically inside a stylized container
-    ui.label('requests').classes('text-h6')
-    i = 0
-    try:
-        while i< len(list_to_show):
-            with ui.row():
-                ui.button('Left' , on_click=lambda : click_left(list_to_show, i))
-                ui.button('Right' , on_click=lambda : click_right(list_to_show, i))
-                ui.button('Choose', on_click=lambda : set_choose(list_to_show, i))
-    except IndexError:
-        if i >= len(list_to_show):
-            pass
-
+    with ui.card():
+        ui.label('requests').classes('text-h6')
+        with ui.column():
+            ui.button('dadw')
+            #פרטי הבקשה
     #לולאת וויל שתפסיק כאשר הגיע לאורך הרשימה
     #תעלה משתנה כל פעם ב1 וזה יהיה המיקום ברשימה שמציגים
     #אם נלחץ כפתור בחר ביירק
     #להוסיף דפדוף בין הרשימה
+    with ui.row():
+        ui.button('Left')
+        ui.button('Right')
 
     """for city in list_to_sow:
         ui.label(city)
     ui.separator().classes('my-4')"""
-
-def left(list, i):
-    with ui.column():
-        ui.label("Name: "+list[i]["name"])
-        ui.label("City: "+list[i]["city"])
-    i -= 1
-
-def right(list, i):
-    with ui.column():
-        ui.label("Name: "+list[i]["name"])
-        ui.label("City: "+list[i]["city"])
-    i += 1
-
-
 
 #הפעולה שנראת כאשר לוחצים על כתפור שמור ביצירת תלמיד
 def save_student(name, phone):
@@ -130,38 +123,18 @@ def save_adult(name, phone ,city):
     adult.adult = adult.create_adult(name,phone,city)
     ui.navigate.to("/requestsPage", new_tab=False)
 
-def save_request(): #מקבל את כל התנאים של יצירת בקשה
-    pass
+def save_request(category, description,owner_name,owner_number, owner_area): #מקבל את כל התנאים של יצירת בקשה
+    requests.create_request(category, description,owner_name,owner_number, owner_area)
+    ui.navigate.to("/requestsPage", new_tab=False)
+
 
 def next_requests(list_to_sow):
-    with ui.card():
+    '''with ui.card():
         ui.label('requests').classes('text-h6')
         with ui.column():
-            textview('dwdw')
     #לחזור לזה רק אחרי שיש נתונים בדטה בייס
-
-def set_choose(list_to_show, i):
-    database.set_helper_to_request(list_to_show[i]["Id"], list_to_show[i]["Helper_name"], list_to_show[i]["Helper_number"])
-    ui.notify('Request chosen successfully!!!')
-
-
-def click_right(list_to_show, i):
-    with ui.column():
-        ui.label("Name: "+list_to_show[i]["Owner_name"])
-        ui.label("Phone number: "+list_to_show[i]["Owner_number"])
-        ui.label("City: "+list_to_show[i]["Owner_area"])
-        ui.label("Category: "+list_to_show[i]["Category"])
-        ui.label("Description: "+list_to_show[i]["Description"])
-    i += 1
-
-def click_left(list_to_show, i):
-    with ui.column():
-        ui.label("Name: "+list_to_show[i]["Owner_name"])
-        ui.label("Phone number: "+list_to_show[i]["Owner_number"])
-        ui.label("City: "+list_to_show[i]["Owner_area"])
-        ui.label("Category: "+list_to_show[i]["Category"])
-        ui.label("Description: "+list_to_show[i]["Description"])
-    i -= 1
+'''
+    pass
 
 
 ui.run(root())

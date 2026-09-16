@@ -1,24 +1,15 @@
-requests = []
+import database
 
-def init_requests():
-    global requests
-
+"""
+    This function creates new request and saves it locally and in database
+"""
 def create_request(category, description,owner_name,owner_number, owner_area):
-    return {
-            "Id" : len(requests),
-            "Status": 0,
+    request = {
+            "Id" : database.get_requests_count(),
             "Category": category,
             "Description" : description,
             "Owner_name" : owner_name,
             "Owner_number" : owner_number,
-            "Owner_area" : owner_area,
-            "Helper_name" : None,
-            "Helper_number" : None
+            "Owner_area" : owner_area
         }
-
-
-
-def add_helper(id, name, number):
-    requests[id]["Helper_name"] = name
-    requests[id]["helper_number"] = number
-
+    database.save_new_request(request)
