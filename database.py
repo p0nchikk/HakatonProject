@@ -84,9 +84,3 @@ def get_list_of_dict(dict):
         }
         list.append(curr_request)
     return list
-
-
-
-init_database()
-list = get_requests_by_category_and_area("Technology", "Netanya")
-print(list)
