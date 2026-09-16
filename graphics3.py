@@ -79,10 +79,12 @@ def newRequestsPage():
     with ui.row():
         select_categories = ui.select(consts.CATEGORIES)
         description = ui.textarea(label='Text', placeholder='start typing')
-
+        #מציג את הקבועים
         ui.labl(f'name: {adult.adult.name}')
         ui.labl(f'phone number: {adult.adult.name}')
-        ui.labl(f'locati: {adult.adult.name}')
+        ui.labl(f'city: {adult.adult.city}')
+
+        ui.button('save', on_click=lambda : save_request())
 
 
 #העמוד של החיפוש של הנער
