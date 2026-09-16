@@ -80,7 +80,9 @@ def newRequestsPage():
         select_categories = ui.select(consts.CATEGORIES)
         description = ui.textarea(label='Text', placeholder='start typing')
 
-        ui.labl(f'name: {requests.requests}')
+        ui.labl(f'name: {adult.adult.name}')
+        ui.labl(f'phone number: {adult.adult.name}')
+        ui.labl(f'locati: {adult.adult.name}')
 
 
 #העמוד של החיפוש של הנער
