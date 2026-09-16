@@ -51,7 +51,6 @@ def studentPage () :
 
 
 def adultPage():
-
     name = ui.input(label='enter name:')
     phone = ui.input(label='enter phone number:')
     city = ui.select(consts.CITY_LIST)
@@ -63,27 +62,30 @@ def adultPage():
 
 def requestsPage():
     with ui.row():
-        ui.button('new request', on_click=lambda: ui.navigate.newRequestsPage)
+        ui.button('new request', on_click=lambda: ui.navigate.to('/newRequestsPage'))
         ui.label(f'requests by {adult.adult['name']}:').classes('text-h6')
 
     # שומר את הרשימה של הבקשות של הזקן מהדטה בייס
     requests_list_by_man = database.get_user_requests(int(adult.adult['phone']))
     # מראה לזקן את הבקשות שלו
-    index = 0
+    ui.navigate.to(display(requests_list_by_man,0))
+
+
+def display(lst,index = 0):
     try:
-        while True:
-            ui.label(f'Category: {requests_list_by_man[index]['Category']}')
-            ui.label(f'description: {requests_list_by_man[index]['Description']}')
-            ui.label(f'phone: {requests_list_by_man[index]['Owner_number']}')
-    except ImportError:
-        if index == len(requests_list_by_man):
+        ui.label(f'Category: {lst[index]['Category']}')
+        ui.label(f'description: {lst[index]['Description']}')
+        ui.label(f'status: {lst[index]['Status']}')
+        ui.label(f'phone number: {lst[index]['Owner_number']}')
+    except IndexError:
+        if index == len(lst):
             index = 0
         else:
-            index = len(requests_list_by_man) - 1
+            index = len(lst) - 1
     with ui.row():
-        ui.button('next', on_click=lambda: index + 1)
-        ui.button('last', on_click=lambda: index - 1)
-
+        ui.button('last', on_click=lambda: ui.navigate.to(display(lst,index-1)))
+        ui.button('finish', on_click=lambda: database.update_request_status(lst[index]['id'],consts.FINISHED_STATUS))
+        ui.button('next', on_click=lambda: ui.navigate.to(display(lst,index+1)))
 
 ##################### עמוד יצירת בקשה חדשה
 def newRequestsPage():
@@ -150,5 +152,5 @@ def next_requests(list_to_sow):
     pass
 
 
-ui.run(root())
+ui.run(root)
 
