@@ -14,9 +14,11 @@ def mainPage():
 
 
 def studentPage () :
-    result = ui.input(label='Text', placeholder='start typing',
-             on_change=lambda e: result.set_text('you typed: ' + e.value),
-             validation={'Input too long': lambda value: len(value) < 20})
+    ui.input(label='Enter your name: ', placeholder='start typing')
+    name = ui.label()
+    ui.input(label='Enter your phone number: ', placeholder='start typing')
+    phone = ui.label()
+    ui.button('Next', on_click=lambda: ui.navigate.to("/studentPage", new_tab=False))
 
     ui.button('Back', on_click=ui.navigate.back)
     ui.button('Back', on_click=ui.navigate.back)
@@ -24,9 +26,6 @@ def studentPage () :
 
 def adultPage():
     pass
-
-
-
 
 
 ui.run(root())
