@@ -32,18 +32,17 @@ def save_new_request(request):
     of requests of this number
 """
 def get_user_requests(owner_number):
-    requests_dict = data_frame.loc[data_frame['Owner_number'] == owner_number].to_dict()
-    return get_list_of_dict(requests_dict)
+    requests_dict = data_frame.loc[(data_frame['Owner_number'] == owner_number)].to_dict()
+    return get_list_of_data_frame(requests_dict)
 
 """
     This function gets the owner area and returns dictionary
     of requests from given area
 """
 def get_requests_by_area(owner_area):
-    requests_dict = data_frame.loc[(data_frame['Owner_area'] == owner_area) &
-                                   (data_frame["Status"] == 'Published')  &
-                                   (data_frame["Status"] == consts.WAITING_STATUS)].to_dict()
-    return get_list_of_dict(requests_dict)
+    requests_df = data_frame.loc[(data_frame['Owner_area'] == owner_area) &
+                                   (data_frame["Status"] == consts.WAITING_STATUS)]
+    return get_list_of_data_frame(requests_df)
 
 """
     This function gets the owner area and the category
@@ -52,8 +51,8 @@ def get_requests_by_area(owner_area):
 def get_requests_by_category_and_area(category, owner_area):
     requests_dict = data_frame.loc[(data_frame['Category'] == category) &
                                    (data_frame["Owner_area"] == owner_area) &
-                                   (data_frame["Status"] == consts.WAITING_STATUS)].to_dict()
-    return get_list_of_dict(requests_dict)
+                                   (data_frame["Status"] == consts.WAITING_STATUS)]
+    return get_list_of_data_frame(requests_dict)
 
 """
     This function gets the request id and its new status 
@@ -80,17 +79,20 @@ def get_requests_count():
     return len(data_frame.index)
 
 
-def get_list_of_dict(dict):
+def get_list_of_data_frame(df):
     list = []
-    for i in range(1, len(dict["Status"])+1):
+    for index in range(len(df)):
         curr_request = {
-            "Id": i,
-            "Status": dict["Status"][i],
-            "Category": dict["Category"][i],
-            "Description": dict["Description"][i],
-            "Owner_name": dict["Owner_name"][i],
-            "Owner_number": dict["Owner_number"][i],
-            "Owner_area": dict["Owner_area"][i]
+            "Id": int(df.iloc[index]["Id"]),
+            "Status": int(df.iloc[index]["Status"]),
+            "Category": df.iloc[index]["Category"],
+            "Description": df.iloc[index]["Description"],
+            "Owner_name": df.iloc[index]["Owner_name"],
+            "Owner_number": int(df.iloc[index]["Owner_number"]),
+            "Owner_area": df.iloc[index]["Owner_area"]
         }
         list.append(curr_request)
     return list
+
+init_database()
+print(get_requests_by_area("Tel Aviv"))
