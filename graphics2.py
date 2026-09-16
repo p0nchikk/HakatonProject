@@ -110,12 +110,12 @@ def save_request(): #מקבל את כל התנאים של יצירת בקשה
     pass
 
 def next_requests(list_to_sow):
-    with ui.card():
+    '''with ui.card():
         ui.label('requests').classes('text-h6')
         with ui.column():
-            textview('dwdw')
     #לחזור לזה רק אחרי שיש נתונים בדטה בייס
-
+'''
+    pass
 
 
 ui.run(root())
